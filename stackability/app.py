@@ -2172,7 +2172,19 @@ def index():
             results = stacker.stack_all(trailers, max_results=25)#sx.stack_all(trailers, max_results=25)
 
             if not results:
-                error = "Für diese Anhänger wurde kein gültiger Stapelplan gefunden."
+                partial_results = stacker.stack_partial(trailers, max_results=10)
+
+                if not partial_results:
+                    error = "Für diese Anhänger wurde kein gültiger Stapelplan gefunden."
+                else:
+                    stack_solutions = serialize_stack_solutions([
+                        result["stacks"]
+                        for result in partial_results
+                    ])
+                    solution_count = len(stack_solutions)
+                    stack_count = len(stack_solutions[0])
+                    trailer_count = sum(len(stack) for stack in stack_solutions[0])
+                    error = "Keine vollständige Lösung gefunden. Es werden die besten Teillösungen angezeigt."
             else:
                 stack_solutions = serialize_stack_solutions(results)
                 solution_count = len(stack_solutions)
