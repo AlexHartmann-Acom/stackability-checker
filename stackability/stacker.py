@@ -193,14 +193,15 @@ class Stacker:
     ):
         placed_count = sum(len(stack.trailers) for stack in final_stacks)
 
-        partial_results.append({
-            "stacks": final_stacks,
-            "placed_count": placed_count,
-            "unplaced_trailers": available_trailers.copy(),
-            "filled_positions": len(final_stacks),
-            "total_positions": len(stack_positions),
-            "score": placed_count,
-        })
+        if len(final_stacks) > 1:
+            partial_results.append({
+                "stacks": final_stacks,
+                "placed_count": placed_count,
+                "unplaced_trailers": available_trailers.copy(),
+                "filled_positions": len(final_stacks),
+                "total_positions": len(stack_positions),
+                "score": placed_count,
+            })
 
         if position_index == len(stack_positions):
             return
