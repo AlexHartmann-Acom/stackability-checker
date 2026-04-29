@@ -5,7 +5,8 @@ SPECIAL_MODEL_CATEGORIES = [
     'VT1',
     'VT2',
     'VT3',
-    'VT4'
+    'VT4',
+    'Ultra Low'
 ]
 
 class Trailer:
