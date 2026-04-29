@@ -40,6 +40,9 @@ class Trailer:
         for cat in SPECIAL_MODEL_CATEGORIES:
             if cat in self.model_name:
                 speccats += ' ' + cat
+
+        if speccats == '' and 'GT' in self.model_name:
+            speccats = ' O'
         return self.model_name.split(' ')[0] + speccats
     
     def insert_other_trailer(self, trailer : 'Trailer'):
