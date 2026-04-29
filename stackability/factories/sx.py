@@ -43,6 +43,13 @@ MIDDLE_STACKS = [
         blueprint_indices=[[0,1,2]]
     
     ),
+    ###TESTING
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint()
+        ],
+        blueprint_indices=[0]
+    ),
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
