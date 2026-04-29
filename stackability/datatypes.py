@@ -80,7 +80,7 @@ class TrailerBlueprint:
 
     def copy(self):
         return TrailerBlueprint(
-            allowed_models=self.allowed_models.copy()
+            allowed_models=self.allowed_models.copy() if self.allowed_models is not None else None
             if self.allowed_models is not None
             else None,
             min_height=self.min_height,
