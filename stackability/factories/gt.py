@@ -416,22 +416,22 @@ valid_lorries = [
         stacks=[
             base_with(
                 'FRONT',
-                allowed_models=['VT1','VT2','VT3','VT4'],
+                #allowed_models=['VT1','VT2','VT3','VT4'],
                 max_length=301
             ),
             base_with(
                 'MIDDLE',
-                allowed_models=['VT1','VT2','VT3','VT4'],
+                #allowed_models=['VT1','VT2','VT3','VT4'],
                 max_length=301
             ),
             base_with(
                 'MIDDLE',
-                allowed_models=['VT1','VT2','VT3','VT4'],
+                #allowed_models=['VT1','VT2','VT3','VT4'],
                 max_length=301
             ),
             base_with(
                 'REAR',
-                allowed_models=['VT1','VT2','VT3','VT4'],
+                #allowed_models=['VT1','VT2','VT3','VT4'],
                 max_length=251
             )
         ]
