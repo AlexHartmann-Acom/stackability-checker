@@ -14,7 +14,7 @@ FRONT_STACKS = [
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
-                allowed_models=['PSX']
+                allowed_models=['PSX','KSX']
             ),
             
         ],
@@ -47,7 +47,7 @@ MIDDLE_STACKS = [
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
-                allowed_models=['PSX']
+                allowed_models=['PSX','KSX']
             ),
             
         ],
@@ -63,6 +63,32 @@ MIDDLE_STACKS = [
         ],
         blueprint_indices=[[0,1,2,3,4]]
     
+    ),
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint(
+                allowed_models=['PSX','KSX']
+            ),
+            datatypes.TrailerBlueprint(
+                allowed_models=['BSX']
+            ),
+            
+        ],
+        blueprint_indices=[[0,1],[2]]
+    
+    ),
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint(
+                allowed_models=['BSX']
+            ),
+            datatypes.TrailerBlueprint(
+                allowed_models=['PSX','KSX']
+            ),
+            
+        ],
+        blueprint_indices=[[0,1],[2]]
+    
     )
 ]
 
@@ -70,7 +96,7 @@ REAR_STACKS = [
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
-                allowed_models=['PSX']
+                allowed_models=['PSX','KSX']
             ),
             datatypes.TrailerBlueprint(
                 allowed_models=['BSX']
@@ -99,7 +125,7 @@ REAR_STACKS = [
                 allowed_models=['MSX']
             ),
             datatypes.TrailerBlueprint(
-                allowed_models=['PSX']
+                allowed_models=['PSX','KSX']
             ),
             
         ],

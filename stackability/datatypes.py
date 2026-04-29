@@ -111,13 +111,17 @@ class Stack:
     trailers: list[Trailer]
     trailer_blueprints: list[TrailerBlueprint]
     blueprint_indices: list[list[int]]
+    max_total_height: int
+    max_width: int
 
     def __repr__(self):
         return f'Stack ({len(self.trailers)}) = [{list(map(lambda x: f"{x.model_name} <{x.length}>", self.trailers))}]'
 
-    def __init__(self, trailer_blueprints, blueprint_indices, trailers=None):
+    def __init__(self, trailer_blueprints, blueprint_indices, trailers=None, max_total_height=None, max_width=None):
         self.trailer_blueprints = trailer_blueprints
         self.blueprint_indices = blueprint_indices
+        self.max_total_height = max_total_height
+        self.max_width = max_width
 
         if trailers is None:
             self.trailers = []
@@ -296,6 +300,13 @@ class Stack:
             chosen_trailers=[],
             chosen_indices=[],
         )
+
+        if self.max_total_height is not None:
+            results = [
+                (filled_stack, used_indices)
+                for filled_stack, used_indices in results
+                if sum(trailer.height for trailer in filled_stack.trailers) <= self.max_total_height
+            ]
 
         return results
 
