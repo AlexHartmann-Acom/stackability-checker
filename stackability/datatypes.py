@@ -58,13 +58,13 @@ class Trailer:
         
         if 'VT3' in self.model_category():
             #Can insert HT
-            if 'HT' not in trailer.model_category():
+            if 'HT' not in trailer.model_category() and 'O' not in trailer.model_category():
                 raise Exception(f'{trailer.model_category()} cannot be inserted into {self.model_category()}')
             else:
                 self.contained_trailer = trailer
                 return
 
-        if 'VT4' in self.model_category():
+        if 'VT4' in self.model_category() and 'O' not in trailer.model_category():
             #Can insert VT1
             if 'VT1' not in trailer.model_category():
                 raise Exception(f'{trailer.model_category()} cannot be inserted into {self.model_category()}')
