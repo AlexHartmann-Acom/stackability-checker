@@ -311,6 +311,15 @@ class Stack:
                 if sum(trailer.height for trailer in filled_stack.trailers) <= self.max_total_height
             ]
 
+        results = [
+            (filled_stack, used_indices)
+            for filled_stack, used_indices in results
+            if all(
+                filled_stack.trailers[i].length >= filled_stack.trailers[i + 1].length
+                for i in range(len(filled_stack.trailers) - 1)
+            )
+        ]
+
         return results
 
 
