@@ -6,7 +6,6 @@ FRONT_STACKS = [
             datatypes.TrailerBlueprint(
                 allowed_models=['BSX']
             ),
-            
         ],
         blueprint_indices=[[0,1,2]]
     
@@ -67,6 +66,16 @@ MIDDLE_STACKS = [
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
+                allowed_models=['MSX']
+            ),
+            
+        ],
+        blueprint_indices=[[0,1,2,3]]
+    
+    ),
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint(
                 allowed_models=['PSX','KSX']
             ),
             datatypes.TrailerBlueprint(
@@ -88,6 +97,19 @@ MIDDLE_STACKS = [
             
         ],
         blueprint_indices=[[0,1],[2]]
+    
+    ),
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint(
+                allowed_models=['MSX']
+            ),
+            datatypes.TrailerBlueprint(
+                allowed_models=['PSX','KSX']
+            ),
+            
+        ],
+        blueprint_indices=[[0,1],[2,3]]
     
     )
 ]
@@ -250,6 +272,25 @@ valid_lorries = [
         stacks=[
             base_with(
                 'FRONT',
+                allowed_models=['PSX'],
+                max_length=405
+            ),
+            base_with(
+                'MIDDLE',
+                allowed_models=['PSX'],
+                max_length=405
+            ),
+            base_with(
+                'REAR',
+                allowed_models=['PSX'],
+                max_length=405
+            )
+        ]
+    ),
+    datatypes.Lorry(
+        stacks=[
+            base_with(
+                'FRONT',
                 max_length=325
             ),
             base_with(
@@ -338,7 +379,7 @@ valid_lorries = [
             ),
             base_with(
                 'REAR',
-                max_length=325
+                max_length=405
             )
         ]
     ),
