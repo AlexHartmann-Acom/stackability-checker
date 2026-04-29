@@ -1456,7 +1456,7 @@ HTML = """
             display: grid;
             gap: 14px;
             align-items: end;
-            min-height: 390px;
+            min-height: 430px;
             padding: 0 32px;
         }
 
@@ -1465,7 +1465,7 @@ HTML = """
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            min-height: 360px;
+            min-height: 395px;
             position: relative;
         }
 
@@ -1486,12 +1486,12 @@ HTML = """
         .trailer-block {
             width: var(--box-width);
             height: var(--box-height);
-            min-height: 34px;
+            min-height: 62px;
             max-width: 100%;
             background: linear-gradient(180deg, #d5162e 0%, #b80018 100%);
             color: white;
             border: 2px solid #8f0013;
-            border-radius: 8px 8px 5px 5px;
+            border-radius: 10px 10px 6px 6px;
             box-shadow: 0 4px 9px rgba(0,0,0,0.18);
             margin-top: -1px;
             display: flex;
@@ -1501,80 +1501,98 @@ HTML = """
             position: relative;
             text-align: center;
             overflow: visible;
+            box-sizing: border-box;
+            padding: 8px 34px 18px 34px;
         }
 
         .trailer-block::before,
         .trailer-block::after {
             content: "";
             position: absolute;
-            bottom: 5px;
-            width: 13px;
-            height: 13px;
+            bottom: 6px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
             background: #333;
             border: 2px solid #111;
         }
 
         .trailer-block::before {
-            left: 13px;
+            left: 14px;
         }
 
         .trailer-block::after {
-            right: 13px;
+            right: 14px;
         }
 
         .trailer-model {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
-            line-height: 1.1;
-            padding: 0 6px;
+            line-height: 1.15;
+            padding: 0 4px;
+            max-width: 100%;
+            overflow-wrap: anywhere;
         }
 
         .trailer-dims {
-            margin-top: 3px;
+            margin-top: 4px;
             font-size: 11px;
             opacity: 0.95;
+            white-space: nowrap;
         }
 
         .contained-trailer {
             position: absolute;
             left: 50%;
-            bottom: 25px;
+            bottom: 28px;
             transform: translateX(-50%);
-            width: 64%;
+            width: 68%;
             z-index: 5;
             pointer-events: none;
         }
 
         .contained-trailer-block {
             width: 100% !important;
-            height: 36px !important;
-            min-height: 30px;
+            height: auto !important;
+            min-height: 58px;
             background: linear-gradient(180deg, #ffffff 0%, #eeeeee 100%);
             color: #333;
             border: 2px solid #555;
             box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+            padding: 8px 26px 15px 26px;
         }
 
         .contained-trailer-block::before,
         .contained-trailer-block::after {
-            width: 9px;
-            height: 9px;
-            bottom: 3px;
+            width: 10px;
+            height: 10px;
+            bottom: 4px;
             border-width: 1px;
         }
 
+        .contained-trailer-block::before {
+            left: 10px;
+        }
+
+        .contained-trailer-block::after {
+            right: 10px;
+        }
+
         .contained-trailer-block .trailer-model {
-            font-size: 10px;
+            font-size: 12px;
+            color: #333;
         }
 
         .contained-trailer-block .trailer-dims {
-            display: none;
+            display: block;
+            font-size: 10px;
+            color: #555;
+            opacity: 1;
         }
 
         .contained-label {
             position: absolute;
-            top: -17px;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
             background: #333;
