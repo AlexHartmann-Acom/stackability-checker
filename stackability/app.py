@@ -2011,7 +2011,7 @@ def serialize_stack_result(stacks: list[dt.Stack]) -> list[list[dict[str, Any]]]
             serialized_stack.append(
                 {
                     "sku": trailer.sku,
-                    "model_name": trailer.model_name,
+                    "model_name": trailer.model_category(),
                     "length": trailer.length,
                     "height": trailer.height,
                     "width": trailer.width,

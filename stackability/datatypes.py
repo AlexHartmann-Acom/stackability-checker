@@ -17,6 +17,9 @@ class Trailer:
     def factory_name(self) -> str:
         return 'SX'
     
+    def model_category(self):
+        return self.model_name.split(' ')[0]
+    
 
 class TrailerBlueprint:
     min_height: int
@@ -101,7 +104,7 @@ class TrailerBlueprint:
                 return False
 
         if self.allowed_models is not None:
-            if trailer.model_name is None or trailer.model_name not in self.allowed_models:
+            if trailer.model_category() is None or trailer.model_category() not in self.allowed_models:
                 return False
 
         return True
@@ -115,7 +118,7 @@ class Stack:
     max_width: int
 
     def __repr__(self):
-        return f'Stack ({len(self.trailers)}) = [{list(map(lambda x: f"{x.model_name} <{x.length}>", self.trailers))}]'
+        return f'Stack ({len(self.trailers)}) = [{list(map(lambda x: f"{x.model_category()} <{x.length}>", self.trailers))}]'
 
     def __init__(self, trailer_blueprints, blueprint_indices, trailers=None, max_total_height=None, max_width=None):
         self.trailer_blueprints = trailer_blueprints
@@ -184,7 +187,7 @@ class Stack:
 
                 print(
                     f'  Checking trailer idx={trailer_idx}: '
-                    f'{trailer.model_name} <{trailer.length}>'
+                    f'{trailer.model_category()} <{trailer.length}>'
                 )
 
                 if not trailer_bp.check(trailer):
@@ -204,7 +207,7 @@ class Stack:
 
                 print(
                     f'    -> backtracking from trailer idx={trailer_idx}: '
-                    f'{trailer.model_name} <{trailer.length}>'
+                    f'{trailer.model_category()} <{trailer.length}>'
                 )
 
             print(f'No valid trailer found for stack position {position_idx}')
@@ -246,7 +249,7 @@ class Stack:
 
         def trailer_key(trailer: Trailer):
             return (
-                trailer.model_name,
+                trailer.model_category(),
                 trailer.length,
                 trailer.width,
                 trailer.height,
