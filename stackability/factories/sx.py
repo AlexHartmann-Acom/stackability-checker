@@ -647,36 +647,64 @@ def print_stack_blueprints(label: str, stack: datatypes.Stack):
             f"-{getattr(trailer_bp, 'max_axles', None)}"
         )
 
-def pack_contained_trailers(trailers: list[datatypes.Trailer]) -> list[datatypes.Trailer]:
+def pack_contained_trailers_greedy(trailers: list[datatypes.Trailer]) -> list[datatypes.Trailer]:
     remaining = trailers.copy()
 
-    # Prefer filling larger/container-capable trailers first
     containers = [
         trailer for trailer in remaining
         if "VT3" in trailer.model_category() or "VT4" in trailer.model_category()
     ]
 
+    # Fill larger container trailers first
+    containers.sort(
+        key=lambda trailer: (
+            trailer.length or 0,
+            trailer.width or 0,
+            trailer.height or 0,
+        ),
+        reverse=True,
+    )
+
     for container in containers:
         if container.contained_trailer is not None:
             continue
 
-        for candidate in remaining.copy():
+        candidates = []
+
+        for candidate in remaining:
             if candidate is container:
                 continue
 
             try:
+                # Check compatibility without permanently inserting
                 container.insert_other_trailer(candidate)
-                remaining.remove(candidate)
-                break
+                container.contained_trailer = None
+                candidates.append(candidate)
             except Exception:
                 continue
+
+        if not candidates:
+            continue
+
+        # Pick the longest trailer that fits
+        best_candidate = max(
+            candidates,
+            key=lambda trailer: (
+                trailer.length or 0,
+                trailer.width or 0,
+                trailer.height or 0,
+            ),
+        )
+
+        container.insert_other_trailer(best_candidate)
+        remaining.remove(best_candidate)
 
     return remaining
 
 def stack_all(trailers: list[datatypes.Trailer], max_results: int = 25):
     all_results = []
 
-    trailers = pack_contained_trailers(trailers)
+    trailers = pack_contained_trailers_greedy(trailers)
 
     for lorry_candidate in valid_lorries:
         
