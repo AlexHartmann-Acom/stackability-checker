@@ -635,10 +635,39 @@ def print_stack_blueprints(label: str, stack: datatypes.Stack):
             f"-{getattr(trailer_bp, 'max_axles', None)}"
         )
 
+def pack_contained_trailers(trailers: list[datatypes.Trailer]) -> list[datatypes.Trailer]:
+    remaining = trailers.copy()
+
+    # Prefer filling larger/container-capable trailers first
+    containers = [
+        trailer for trailer in remaining
+        if "VT3" in trailer.model_category() or "VT4" in trailer.model_category()
+    ]
+
+    for container in containers:
+        if container.contained_trailer is not None:
+            continue
+
+        for candidate in remaining.copy():
+            if candidate is container:
+                continue
+
+            try:
+                container.insert_other_trailer(candidate)
+                remaining.remove(candidate)
+                break
+            except Exception:
+                continue
+
+    return remaining
+
 def stack_all(trailers: list[datatypes.Trailer], max_results: int = 25):
     all_results = []
 
+    trailers = pack_contained_trailers(trailers)
+
     for lorry_candidate in valid_lorries:
+        
         _stack_recursive_all(
             stack_positions=lorry_candidate.stacks,
             position_index=0,

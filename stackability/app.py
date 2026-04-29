@@ -1500,7 +1500,7 @@ HTML = """
             align-items: center;
             position: relative;
             text-align: center;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .trailer-block::before,
@@ -1527,12 +1527,64 @@ HTML = """
             font-size: 14px;
             font-weight: bold;
             line-height: 1.1;
+            padding: 0 6px;
         }
 
         .trailer-dims {
             margin-top: 3px;
             font-size: 11px;
             opacity: 0.95;
+        }
+
+        .contained-trailer {
+            position: absolute;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%);
+            width: 64%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .contained-trailer-block {
+            width: 100% !important;
+            height: 36px !important;
+            min-height: 30px;
+            background: linear-gradient(180deg, #ffffff 0%, #eeeeee 100%);
+            color: #333;
+            border: 2px solid #555;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+        }
+
+        .contained-trailer-block::before,
+        .contained-trailer-block::after {
+            width: 9px;
+            height: 9px;
+            bottom: 3px;
+            border-width: 1px;
+        }
+
+        .contained-trailer-block .trailer-model {
+            font-size: 10px;
+        }
+
+        .contained-trailer-block .trailer-dims {
+            display: none;
+        }
+
+        .contained-label {
+            position: absolute;
+            top: -17px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            font-size: 10px;
+            line-height: 1;
+            padding: 3px 7px;
+            border-radius: 999px;
+            white-space: nowrap;
+            z-index: 10;
         }
 
         .flatbed {
@@ -1631,7 +1683,7 @@ HTML = """
             <button type="submit" class="btn-primary">Stapelplan berechnen</button>
         </div>
 
-        <p class="hint">Maße bitte in cm eingeben. Die Visualisierung skaliert Länge und Höhe relativ zu den eingegebenen Anhängern.</p>
+        <p class="hint">Maße bitte in cm eingeben. Die Visualisierung skaliert Länge und Höhe relativ zu den eingegebenen Anhängern. Eingeladene Anhänger werden hell innerhalb des äußeren Anhängers angezeigt.</p>
 
         <input type="hidden" name="trailers_json" id="trailersJson">
     </form>
@@ -1854,12 +1906,50 @@ function clearTrailers() {
 
 function addExample() {
     trailers = [
-        {sku: '', model_name:'MSX', length:405, height:180, width:120, axles:2, quantity:2},
-        {sku: '', model_name:'BSX', length:251, height:150, width:130, axles:1, quantity:1},
-        {sku: '', model_name:'GT', length:205, height:120, width:120, axles:1, quantity:3}
+        {sku: '1.10.1.0807.05', model_name:'GTT 2500.301x151 VT3', length:301, height:153, width:151, axles:2, quantity:1},
+        {sku: '1.10.1.0101.02', model_name:'GT 500.151x101 HT', length:151, height:48, width:101, axles:1, quantity:1},
+        {sku: '1.00.1.0101.00', model_name:'BSX 750.205x120', length:205, height:35, width:120, axles:1, quantity:2}
     ];
 
     renderTrailers();
+}
+
+function renderTrailerBlock(trailer, contained = false) {
+    const containedClass = contained ? ' contained-trailer-block' : '';
+    const containedLabel = contained ? '<div class="contained-label">eingeladen</div>' : '';
+
+    return `
+        <div class="trailer-block${containedClass}"
+             style="--box-width: ${trailer.visual_width}%; --box-height: ${trailer.visual_height}px;">
+            ${containedLabel}
+
+            <div class="trailer-model">${escapeHtml(trailer.model_name)}</div>
+
+            <div class="trailer-dims">
+                ${escapeHtml(trailer.length)} × ${escapeHtml(trailer.width)} × ${escapeHtml(trailer.height)} cm
+            </div>
+
+            ${
+                trailer.contained_trailer
+                    ? `<div class="contained-trailer">
+                        ${renderTrailerBlock(trailer.contained_trailer, true)}
+                       </div>`
+                    : ''
+            }
+        </div>
+    `;
+}
+
+function renderStack(stack, stackIndex) {
+    return `
+        <div class="lorry-position">
+            <div class="position-label">Position ${stackIndex + 1}</div>
+
+            <div class="stack-pile">
+                ${stack.map(trailer => renderTrailerBlock(trailer)).join('')}
+            </div>
+        </div>
+    `;
 }
 
 function renderCurrentSolution() {
@@ -1871,24 +1961,7 @@ function renderCurrentSolution() {
     const loadArea = document.getElementById('lorryLoadArea');
 
     loadArea.style.gridTemplateColumns = `repeat(${solution.length}, minmax(145px, 1fr))`;
-
-    loadArea.innerHTML = solution.map((stack, stackIndex) => `
-        <div class="lorry-position">
-            <div class="position-label">Position ${stackIndex + 1}</div>
-
-            <div class="stack-pile">
-                ${stack.map(trailer => `
-                    <div class="trailer-block"
-                         style="--box-width: ${trailer.visual_width}%; --box-height: ${trailer.visual_height}px;">
-                        <div class="trailer-model">${escapeHtml(trailer.model_name)}</div>
-                        <div class="trailer-dims">
-                            ${trailer.length} × ${trailer.width} × ${trailer.height} cm
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `).join('');
+    loadArea.innerHTML = solution.map((stack, stackIndex) => renderStack(stack, stackIndex)).join('');
 
     const solutionCounter = document.getElementById('solutionCounter');
     if (solutionCounter) {
@@ -1902,7 +1975,11 @@ function renderCurrentSolution() {
 
     const trailerCount = document.getElementById('trailerCount');
     if (trailerCount) {
-        trailerCount.innerText = solution.reduce((sum, stack) => sum + stack.length, 0);
+        trailerCount.innerText = solution.reduce((sum, stack) => {
+            return sum + stack.reduce((stackSum, trailer) => {
+                return stackSum + 1 + (trailer.contained_trailer ? 1 : 0);
+            }, 0);
+        }, 0);
     }
 }
 
@@ -1992,6 +2069,22 @@ def build_trailers(raw_trailers: list[dict[str, Any]]) -> list[dt.Trailer]:
 
     return trailers
 
+def serialize_trailer(trailer: dt.Trailer, visual_width, visual_height) -> dict:
+    return {
+        "sku": trailer.sku,
+        "model_name": trailer.model_name,
+        "length": trailer.length,
+        "height": trailer.height,
+        "width": trailer.width,
+        "axles": trailer.axles,
+        "contained_trailer": (
+            serialize_trailer(trailer.contained_trailer, 58, 42)
+            if trailer.contained_trailer is not None
+            else None
+        ),
+        "visual_width": round(visual_width, 1),
+        "visual_height": round(visual_height, 1),
+    }
 
 def serialize_stack_result(stacks: list[dt.Stack]) -> list[list[dict[str, Any]]]:
     all_trailers = [trailer for stack in stacks for trailer in stack.trailers]
@@ -2009,16 +2102,7 @@ def serialize_stack_result(stacks: list[dt.Stack]) -> list[list[dict[str, Any]]]
             visual_height = 42 + (trailer.height / max_height) * 48
 
             serialized_stack.append(
-                {
-                    "sku": trailer.sku,
-                    "model_name": trailer.model_category(),
-                    "length": trailer.length,
-                    "height": trailer.height,
-                    "width": trailer.width,
-                    "axles": trailer.axles,
-                    "visual_width": round(visual_width, 1),
-                    "visual_height": round(visual_height, 1),
-                }
+                serialize_trailer(trailer, visual_width, visual_height)
             )
 
         serialized.append(serialized_stack)

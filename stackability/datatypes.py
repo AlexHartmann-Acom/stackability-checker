@@ -5,6 +5,7 @@ class Trailer:
     axles: int
     sku: str
     model_name : str
+    contained_trailer = None
 
     def __init__(self, sku, height, width, length, axles, model_name):
         self.sku = sku
@@ -19,6 +20,29 @@ class Trailer:
     
     def model_category(self):
         return self.model_name.split(' ')[0]
+    
+    def insert_other_trailer(self, trailer : 'Trailer'):
+        if 'VT3' not in self.model_category() and 'VT4' not in self.model_category():
+            raise Exception(f'This trailer type ({self.model_category()}) cannot contain another trailer')
+        
+        if self.contained_trailer is not None:
+            raise Exception(f'This trailer already contains another trailer')
+        
+        if 'VT3' in self.model_category():
+            #Can insert HT
+            if 'HT' not in trailer.model_category():
+                raise Exception(f'{trailer.model_category()} cannot be inserted into {self.model_category()}')
+            else:
+                self.contained_trailer = trailer
+                return
+
+        if 'VT4' in self.model_category():
+            #Can insert VT1
+            if 'VT1' not in trailer.model_category():
+                raise Exception(f'{trailer.model_category()} cannot be inserted into {self.model_category()}')
+            else:
+                self.contained_trailer = trailer
+                return
     
 
 class TrailerBlueprint:
