@@ -36,7 +36,11 @@ class Trailer:
         return factory_string
     
     def model_category(self):
-        return self.model_name.split(' ')[0]
+        speccats = ''
+        for cat in SPECIAL_MODEL_CATEGORIES:
+            if cat in self.model_name:
+                speccats += ' ' + cat
+        return self.model_name.split(' ')[0] + speccats
     
     def insert_other_trailer(self, trailer : 'Trailer'):
         if trailer.length > self.length or trailer.width > self.width or trailer.height > self.height:
@@ -148,10 +152,13 @@ class TrailerBlueprint:
                 return False
 
         if self.allowed_models is not None:
-            if trailer.model_category() is None or trailer.model_category() not in self.allowed_models:
+            if trailer.model_category() is None:
                 return False
-
-        return True
+            for allowed_model in self.allowed_models:
+                if allowed_model in trailer.model_category():
+                    return True
+        
+        return False
 
 
 class Stack:
