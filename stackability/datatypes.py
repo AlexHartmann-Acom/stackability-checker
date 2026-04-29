@@ -1,3 +1,13 @@
+SPECIAL_MODEL_CATEGORIES = [
+    'O',
+    'R',
+    'HT',
+    'VT1',
+    'VT2',
+    'VT3',
+    'VT4'
+]
+
 class Trailer:
     height: int
     width: int
@@ -16,7 +26,14 @@ class Trailer:
         self.model_name = model_name
 
     def factory_name(self) -> str:
-        return 'SX'
+        FACTORY_STRINGS = [
+            'SX',
+            'GT'
+        ]
+        for factory_string in FACTORY_STRINGS:
+            if factory_string in self.model_name:
+                return factory_string
+        return factory_string
     
     def model_category(self):
         return self.model_name.split(' ')[0]

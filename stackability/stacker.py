@@ -5,17 +5,11 @@ import stackability.factories.gt as gt
 class NonHomogeneousDeliveryException(Exception):
     pass
 
-FACTORY_STRINGS = [
-    'SX',
-    'GT'
-]
+
 
 def _get_factory(trailer : dt.Trailer):
-    for factory_string in FACTORY_STRINGS:
-        if factory_string in trailer.model_name:
-            return factory_string
-        
-    return None
+    return trailer.factory_name()
+    
 
 class Stacker:
     trailers : list[dt.Trailer]
