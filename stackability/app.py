@@ -7,6 +7,7 @@ from flask import Flask, render_template_string, request, send_from_directory, u
 
 from stackability.factories import sx
 from stackability import datatypes as dt
+from stackability import stacker as st
 
 
 app = Flask(__name__)
@@ -2166,7 +2167,9 @@ def index():
             trailers_for_ui = json.loads(request.form.get("trailers_json", "[]"))
             trailers = build_trailers(trailers_for_ui)
 
-            results = sx.stack_all(trailers, max_results=25)
+            stacker = st.Stacker(trailers)
+
+            results = stacker.stack_all(trailers, max_results=25)#sx.stack_all(trailers, max_results=25)
 
             if not results:
                 error = "Für diese Anhänger wurde kein gültiger Stapelplan gefunden."
