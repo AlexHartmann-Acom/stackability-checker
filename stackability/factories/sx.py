@@ -329,7 +329,7 @@ valid_lorries = [
             base_with(
                 'MIDDLE',
                 max_length=305,
-                max_width=178
+                max_width=177
             ),
             base_with(
                 'MIDDLE',
@@ -350,7 +350,7 @@ valid_lorries = [
             base_with(
                 'MIDDLE',
                 max_length=301,
-                max_width=178
+                max_width=177
             ),
             base_with(
                 'MIDDLE',
@@ -371,7 +371,7 @@ valid_lorries = [
             base_with(
                 'MIDDLE',
                 max_length=305,
-                max_width=178
+                max_width=177
             ),
             base_with(
                 'MIDDLE',
@@ -392,7 +392,7 @@ valid_lorries = [
             base_with(
                 'MIDDLE',
                 max_length=301,
-                max_width=178
+                max_width=177
             ),
             base_with(
                 'MIDDLE',
@@ -409,12 +409,12 @@ valid_lorries = [
             base_with(
                 'FRONT',
                 max_length=305,
-                max_width=178
+                max_width=177
             ),
             base_with(
                 'MIDDLE',
                 max_length=305,
-                max_width=178
+                max_width=177
             ),
             base_with(
                 'MIDDLE',
