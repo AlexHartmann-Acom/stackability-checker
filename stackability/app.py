@@ -1258,192 +1258,794 @@ HTML = """
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<title>Stapellogik Anhänger</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Stapellogik Anhänger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-:root {
-    --anssems-red: #c4001a;
-    --anssems-red-dark: #a80016;
-    --bg: #f5f5f5;
-    --text: #222;
-}
+    <style>
+        :root {
+            --anssems-red: #c4001a;
+            --anssems-red-dark: #a80016;
+            --bg: #f5f5f5;
+            --text: #222;
+            --muted: #666;
+            --border: #e6e6e6;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background: var(--bg);
-    margin: 0;
-    padding: 24px;
-    color: var(--text);
-}
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 24px;
+            color: var(--text);
+        }
 
-.container { max-width: 1200px; margin: 0 auto; }
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+        }
 
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
 
-button {
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-}
+        .logo {
+            height: 52px;
+            display: block;
+        }
 
-.btn-primary { background: var(--anssems-red); color: white; }
-.btn-secondary { background: #eee; }
+        h1 {
+            margin: 0;
+            color: var(--anssems-red);
+        }
 
-.lorry-load-area {
-    display: grid;
-    gap: 16px;
-    min-height: 460px;
-    align-items: end;
-}
+        .subtitle {
+            color: var(--muted);
+            margin-top: 4px;
+        }
 
-.lorry-position {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 420px;
-}
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+            margin-bottom: 20px;
+        }
 
-.position-label {
-    margin-bottom: 6px;
-    color: #777;
-}
+        .sku-add-row {
+            display: grid;
+            grid-template-columns: 1.5fr auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 2px solid var(--border);
+        }
 
-.stack-pile {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-}
+        .trailer-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 130px auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
 
-.trailer-block {
-    width: var(--box-width);
-    height: var(--box-height);
-    min-height: 40px;
-    background: linear-gradient(180deg, #d5162e, #b80018);
-    color: white;
-    border: 2px solid #8f0013;
-    border-radius: 8px;
-    margin-top: -2px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 6px;
-    text-align: center;
-}
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 4px;
+        }
 
-.trailer-block.has-contained {
-    padding-bottom: 70px;
-}
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 9px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
 
-.trailer-model { font-weight: bold; font-size: 13px; }
-.trailer-dims { font-size: 11px; opacity: 0.9; }
+        button {
+            border: 0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
 
-/* contained trailer */
-.contained-trailer {
-    position: absolute;
-    bottom: 8px;
-    width: 70%;
-}
+        .btn-primary {
+            background: var(--anssems-red);
+            color: white;
+        }
 
-.contained-trailer-block {
-    background: linear-gradient(180deg, #ffffff, #eeeeee);
-    color: #333;
-    border: 2px solid #555;
-    border-radius: 6px;
-    padding: 6px;
-    font-size: 11px;
-}
+        .btn-primary:hover {
+            background: var(--anssems-red-dark);
+        }
 
-.contained-label {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: white;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 999px;
-}
-</style>
+        .btn-secondary {
+            background: #fff0f0;
+            color: var(--anssems-red);
+        }
+
+        .btn-danger {
+            background: #ffe5e5;
+            color: var(--anssems-red);
+        }
+
+        .btn-muted {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .actions,
+        .solution-nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .quantity-control {
+            display: grid;
+            grid-template-columns: 36px 1fr 36px;
+            gap: 6px;
+        }
+
+        .quantity-display {
+            text-align: center;
+            font-weight: bold;
+            padding: 9px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .result-error {
+            border-left: 6px solid var(--anssems-red);
+            background: #fff5f5;
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        .summary {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .summary-pill {
+            background: #fff0f0;
+            color: var(--anssems-red);
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .solution-counter {
+            font-weight: bold;
+            color: #444;
+        }
+
+        .lorry-wrap {
+            margin-top: 18px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .lorry-scene {
+            min-width: 900px;
+            padding: 20px 10px 6px 10px;
+        }
+
+        .lorry-load-area {
+            display: grid;
+            gap: 14px;
+            align-items: end;
+            min-height: 470px;
+            padding: 0 32px;
+        }
+
+        .lorry-position {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 435px;
+            position: relative;
+        }
+
+        .position-label {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .stack-pile {
+            width: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .trailer-block {
+            width: var(--box-width);
+            height: var(--box-height);
+            min-height: 62px;
+            max-width: 100%;
+            background: linear-gradient(180deg, #d5162e 0%, #b80018 100%);
+            color: white;
+            border: 2px solid #8f0013;
+            border-radius: 10px 10px 6px 6px;
+            box-shadow: 0 4px 9px rgba(0,0,0,0.18);
+            margin-top: -1px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            text-align: center;
+            overflow: visible;
+            box-sizing: border-box;
+            padding: 8px 34px 18px 34px;
+        }
+
+        .trailer-block.has-contained {
+            height: auto !important;
+            min-height: 138px;
+            padding-top: 12px;
+            justify-content: flex-start;
+        }
+
+        .trailer-block::before,
+        .trailer-block::after {
+            content: "";
+            position: absolute;
+            bottom: 6px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #333;
+            border: 2px solid #111;
+        }
+
+        .trailer-block::before {
+            left: 14px;
+        }
+
+        .trailer-block::after {
+            right: 14px;
+        }
+
+        .trailer-model {
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.15;
+            padding: 0 4px;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+        }
+
+        .trailer-dims {
+            margin-top: 4px;
+            font-size: 11px;
+            opacity: 0.95;
+            white-space: nowrap;
+        }
+
+        .trailer-block.has-contained > .trailer-model {
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .trailer-block.has-contained > .trailer-dims {
+            font-size: 10px;
+            margin-bottom: 8px;
+        }
+
+        .contained-trailer {
+            position: relative;
+            left: auto;
+            bottom: auto;
+            transform: none;
+            width: 74%;
+            z-index: 5;
+            pointer-events: none;
+            margin-top: 6px;
+        }
+
+        .contained-trailer-block {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 62px;
+            background: linear-gradient(180deg, #ffffff 0%, #eeeeee 100%);
+            color: #333;
+            border: 2px solid #555;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+            padding: 8px 26px 16px 26px;
+        }
+
+        .contained-trailer-block::before,
+        .contained-trailer-block::after {
+            width: 10px;
+            height: 10px;
+            bottom: 4px;
+            border-width: 1px;
+        }
+
+        .contained-trailer-block::before {
+            left: 10px;
+        }
+
+        .contained-trailer-block::after {
+            right: 10px;
+        }
+
+        .contained-trailer-block .trailer-model {
+            font-size: 12px;
+            color: #333;
+        }
+
+        .contained-trailer-block .trailer-dims {
+            display: block;
+            font-size: 10px;
+            color: #555;
+            opacity: 1;
+        }
+
+        .contained-label {
+            display: inline-block;
+            background: #333;
+            color: white;
+            font-size: 10px;
+            line-height: 1;
+            padding: 3px 7px;
+            border-radius: 999px;
+            white-space: nowrap;
+            margin-bottom: 4px;
+        }
+
+        .flatbed {
+            height: 34px;
+            background: linear-gradient(180deg, #3a3a3a, #222);
+            border-radius: 6px;
+            margin: 0 22px;
+            position: relative;
+            box-shadow: 0 5px 14px rgba(0,0,0,0.25);
+        }
+
+        .flatbed::before {
+            content: "";
+            position: absolute;
+            left: -28px;
+            bottom: 0;
+            width: 36px;
+            height: 42px;
+            background: #2c2c2c;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .wheel {
+            position: absolute;
+            bottom: -20px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #111;
+            border: 5px solid #444;
+            box-sizing: border-box;
+        }
+
+        .wheel.w1 { left: 8%; }
+        .wheel.w2 { left: 16%; }
+        .wheel.w3 { right: 16%; }
+        .wheel.w4 { right: 8%; }
+
+        .lorry-caption {
+            text-align: center;
+            color: #555;
+            margin-top: 28px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 950px) {
+            body {
+                padding: 16px;
+            }
+
+            .trailer-row,
+            .sku-add-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logo {
+                height: 44px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 <div class="container">
 
-<form method="post" id="stackForm" class="card">
-    <div id="trailerRows"></div>
-    <button type="submit" class="btn-primary">Berechnen</button>
-    <input type="hidden" name="trailers_json" id="trailersJson">
-</form>
+    <div class="header">
+        <img src="{{ url_for('static_files', filename='anssems-logo.svg') }}" class="logo">
+        <div>
+            <h1>Anhänger-Stapelprüfung</h1>
+            <div class="subtitle">Modelle eintragen, Stückzahlen anpassen und Stapelplan auf dem LKW-Tieflader visualisieren</div>
+        </div>
+    </div>
 
-<div class="card">
-    <div class="lorry-load-area" id="lorryLoadArea"></div>
-</div>
+    <form method="post" class="card" id="stackForm">
 
+        <div class="sku-add-row">
+            <div>
+                <label>Artikelnummer / SKU</label>
+                <input id="skuInput" placeholder="z. B. 1.00.1.0102.00" onkeydown="handleSkuKeydown(event)">
+            </div>
+
+            <button type="button" class="btn-secondary" onclick="addTrailerBySku()">+ Per SKU hinzufügen</button>
+        </div>
+
+        <div id="trailerRows"></div>
+
+        <div class="actions">
+            <button type="button" class="btn-secondary" onclick="addTrailer()">+ Modell manuell hinzufügen</button>
+            <button type="button" class="btn-muted" onclick="addExample()">Beispiel laden</button>
+            <button type="button" class="btn-danger" onclick="clearTrailers()">Leeren</button>
+            <button type="submit" class="btn-primary">Stapelplan berechnen</button>
+        </div>
+
+        <p class="hint">Maße bitte in cm eingeben. Die Visualisierung skaliert Länge und Höhe relativ zu den eingegebenen Anhängern. Eingeladene Anhänger werden hell innerhalb des äußeren Anhängers angezeigt.</p>
+
+        <input type="hidden" name="trailers_json" id="trailersJson">
+    </form>
+
+    {% if error %}
+        <div class="card result-error">
+            <h2>Nicht stapelbar / Fehler</h2>
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+
+    {% if stack_solutions %}
+        <div class="card">
+            <h2>Stapelplan auf LKW-Tieflader</h2>
+
+            <div class="summary">
+                <div class="summary-pill"><span id="stackCount">{{ stack_count }}</span> Stapelpositionen</div>
+                <div class="summary-pill"><span id="trailerCount">{{ trailer_count }}</span> Anhänger</div>
+                <div class="summary-pill">{{ solution_count }} mögliche Lösung{% if solution_count != 1 %}en{% endif %}</div>
+            </div>
+
+            {% if solution_count > 1 %}
+                <div class="solution-nav">
+                    <button type="button" class="btn-muted" onclick="previousSolution()">← Vorherige Lösung</button>
+                    <span class="solution-counter" id="solutionCounter"></span>
+                    <button type="button" class="btn-secondary" onclick="nextSolution()">Nächste Lösung →</button>
+                </div>
+            {% endif %}
+
+            <div class="lorry-wrap">
+                <div class="lorry-scene">
+                    <div class="lorry-load-area" id="lorryLoadArea"></div>
+
+                    <div class="flatbed">
+                        <div class="wheel w1"></div>
+                        <div class="wheel w2"></div>
+                        <div class="wheel w3"></div>
+                        <div class="wheel w4"></div>
+                    </div>
+
+                    <div class="lorry-caption">
+                        Schematische Darstellung: Länge und Höhe der Boxen sind relativ skaliert, nicht maßstabsgetreu.
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
 
 <script>
 let trailers = {{ trailers | tojson }};
 let stackSolutions = {{ stack_solutions | tojson }};
+let skuCatalog = {{ sku_catalog | tojson }};
 let currentSolutionIndex = 0;
 
-function escapeHtml(v){
-    return String(v ?? '')
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;');
+function normalizeSku(value) {
+    return String(value || '').trim().toUpperCase();
 }
 
-function renderTrailerBlock(trailer, contained=false){
-    const hasContained = trailer.contained_trailer && !contained;
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
+function sameTrailerDefinition(a, b) {
+    return normalizeSku(a.sku) === normalizeSku(b.sku)
+        || (
+            String(a.model_name || '') === String(b.model_name || '')
+            && Number(a.length) === Number(b.length)
+            && Number(a.height) === Number(b.height)
+            && Number(a.width) === Number(b.width)
+            && Number(a.axles || 2) === Number(b.axles || 2)
+        );
+}
+
+function addTrailerBySku() {
+    const input = document.getElementById('skuInput');
+    const sku = normalizeSku(input.value);
+
+    if (!sku) {
+        alert('Bitte eine SKU eingeben.');
+        return;
+    }
+
+    const catalogItem = skuCatalog[sku];
+
+    if (!catalogItem) {
+        alert(`SKU nicht gefunden: ${sku}`);
+        return;
+    }
+
+    const newTrailer = {
+        sku: sku,
+        model_name: catalogItem.model_name,
+        length: catalogItem.length,
+        height: catalogItem.height,
+        width: catalogItem.width,
+        axles: catalogItem.axles || 1,
+        quantity: 1
+    };
+
+    const existingIndex = trailers.findIndex(t => sameTrailerDefinition(t, newTrailer));
+
+    if (existingIndex >= 0) {
+        trailers[existingIndex].quantity = Number(trailers[existingIndex].quantity || 1) + 1;
+    } else {
+        trailers.push(newTrailer);
+    }
+
+    input.value = '';
+    renderTrailers();
+}
+
+function handleSkuKeydown(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addTrailerBySku();
+    }
+}
+
+function renderTrailers() {
+    const container = document.getElementById('trailerRows');
+
+    container.innerHTML = trailers.map((t, i) => `
+        <div class="trailer-row">
+            <div>
+                <label>Modellname${t.sku ? ` · SKU ${escapeHtml(t.sku)}` : ''}</label>
+                <input value="${escapeHtml(t.model_name || '')}" onchange="trailers[${i}].model_name=this.value">
+            </div>
+
+            <div>
+                <label>Länge</label>
+                <input type="number" value="${escapeHtml(t.length || '')}" onchange="trailers[${i}].length=this.value">
+            </div>
+
+            <div>
+                <label>Höhe</label>
+                <input type="number" value="${escapeHtml(t.height || '')}" onchange="trailers[${i}].height=this.value">
+            </div>
+
+            <div>
+                <label>Breite</label>
+                <input type="number" value="${escapeHtml(t.width || '')}" onchange="trailers[${i}].width=this.value">
+            </div>
+
+            <div>
+                <label>Achsen</label>
+                <input type="number" value="${escapeHtml(t.axles || 2)}" onchange="trailers[${i}].axles=this.value">
+            </div>
+
+            <div>
+                <label>Stückzahl</label>
+                <div class="quantity-control">
+                    <button type="button" class="btn-muted" onclick="decreaseQuantity(${i})">−</button>
+                    <div class="quantity-display">${t.quantity || 1}</div>
+                    <button type="button" class="btn-muted" onclick="increaseQuantity(${i})">+</button>
+                </div>
+            </div>
+
+            <button type="button" class="btn-danger" onclick="removeTrailer(${i})">Entfernen</button>
+        </div>
+    `).join('');
+
+    document.getElementById('trailersJson').value = JSON.stringify(trailers);
+}
+
+function increaseQuantity(i) {
+    trailers[i].quantity = Number(trailers[i].quantity || 1) + 1;
+    renderTrailers();
+}
+
+function decreaseQuantity(i) {
+    const q = Number(trailers[i].quantity || 1);
+
+    if (q <= 1) {
+        trailers.splice(i, 1);
+    } else {
+        trailers[i].quantity = q - 1;
+    }
+
+    if (trailers.length === 0) {
+        addTrailer();
+    } else {
+        renderTrailers();
+    }
+}
+
+function removeTrailer(i) {
+    trailers.splice(i, 1);
+
+    if (trailers.length === 0) {
+        addTrailer();
+    } else {
+        renderTrailers();
+    }
+}
+
+function addTrailer() {
+    trailers.push({
+        sku: '',
+        model_name: '',
+        length: '',
+        height: '',
+        width: '',
+        axles: 2,
+        quantity: 1
+    });
+
+    renderTrailers();
+}
+
+function clearTrailers() {
+    trailers = [];
+    addTrailer();
+}
+
+function addExample() {
+    trailers = [
+        {sku: '1.10.1.0807.05', model_name:'GTT 2500.301x151 VT3', length:301, height:153, width:151, axles:2, quantity:1},
+        {sku: '1.10.1.0101.02', model_name:'GT 500.151x101 HT', length:151, height:48, width:101, axles:1, quantity:1},
+        {sku: '1.00.1.0101.00', model_name:'BSX 750.205x120', length:205, height:35, width:120, axles:1, quantity:2}
+    ];
+
+    renderTrailers();
+}
+
+function renderTrailerBlock(trailer, contained = false) {
+    const containedClass = contained ? ' contained-trailer-block' : '';
+    const hasContainedClass = trailer.contained_trailer && !contained ? ' has-contained' : '';
 
     return `
-    <div class="trailer-block ${hasContained ? 'has-contained' : ''} ${contained ? 'contained-trailer-block' : ''}"
-         style="--box-width:${trailer.visual_width}%; --box-height:${trailer.visual_height}px;">
+        <div class="trailer-block${containedClass}${hasContainedClass}"
+             style="--box-width: ${trailer.visual_width}%; --box-height: ${trailer.visual_height}px;">
 
-        <div class="trailer-model">${escapeHtml(trailer.model_name)}</div>
-        <div class="trailer-dims">
-            ${trailer.length} × ${trailer.width} × ${trailer.height} cm
+            <div class="trailer-model">${escapeHtml(trailer.model_name)}</div>
+
+            <div class="trailer-dims">
+                ${escapeHtml(trailer.length)} × ${escapeHtml(trailer.width)} × ${escapeHtml(trailer.height)} cm
+            </div>
+
+            ${
+                trailer.contained_trailer
+                    ? `<div class="contained-trailer">
+                        <div class="contained-label">eingeladen</div>
+                        ${renderTrailerBlock(trailer.contained_trailer, true)}
+                       </div>`
+                    : ''
+            }
         </div>
-
-        ${
-            hasContained
-            ? `<div class="contained-trailer">
-                    <div class="contained-label">eingeladen</div>
-                    ${renderTrailerBlock(trailer.contained_trailer, true)}
-               </div>`
-            : ''
-        }
-
-    </div>`;
+    `;
 }
 
-function renderCurrentSolution(){
-    if (!stackSolutions.length) return;
+function renderStack(stack, stackIndex) {
+    return `
+        <div class="lorry-position">
+            <div class="position-label">Position ${stackIndex + 1}</div>
+
+            <div class="stack-pile">
+                ${stack.map(trailer => renderTrailerBlock(trailer)).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function renderCurrentSolution() {
+    if (!stackSolutions || stackSolutions.length === 0) {
+        return;
+    }
 
     const solution = stackSolutions[currentSolutionIndex];
     const loadArea = document.getElementById('lorryLoadArea');
 
-    loadArea.style.gridTemplateColumns = `repeat(${solution.length}, 1fr)`;
+    loadArea.style.gridTemplateColumns = `repeat(${solution.length}, minmax(145px, 1fr))`;
+    loadArea.innerHTML = solution.map((stack, stackIndex) => renderStack(stack, stackIndex)).join('');
 
-    loadArea.innerHTML = solution.map((stack, i) => `
-        <div class="lorry-position">
-            <div class="position-label">Position ${i+1}</div>
-            <div class="stack-pile">
-                ${stack.map(t => renderTrailerBlock(t)).join('')}
-            </div>
-        </div>
-    `).join('');
+    const solutionCounter = document.getElementById('solutionCounter');
+    if (solutionCounter) {
+        solutionCounter.innerText = `Lösung ${currentSolutionIndex + 1} von ${stackSolutions.length}`;
+    }
+
+    const stackCount = document.getElementById('stackCount');
+    if (stackCount) {
+        stackCount.innerText = solution.length;
+    }
+
+    const trailerCount = document.getElementById('trailerCount');
+    if (trailerCount) {
+        trailerCount.innerText = solution.reduce((sum, stack) => {
+            return sum + stack.reduce((stackSum, trailer) => {
+                return stackSum + 1 + (trailer.contained_trailer ? 1 : 0);
+            }, 0);
+        }, 0);
+    }
+}
+
+function previousSolution() {
+    if (!stackSolutions || stackSolutions.length === 0) {
+        return;
+    }
+
+    currentSolutionIndex =
+        (currentSolutionIndex - 1 + stackSolutions.length) % stackSolutions.length;
+
+    renderCurrentSolution();
+}
+
+function nextSolution() {
+    if (!stackSolutions || stackSolutions.length === 0) {
+        return;
+    }
+
+    currentSolutionIndex =
+        (currentSolutionIndex + 1) % stackSolutions.length;
+
+    renderCurrentSolution();
+}
+
+document.getElementById('stackForm').addEventListener('submit', () => {
+    document.getElementById('trailersJson').value = JSON.stringify(trailers);
+});
+
+if (trailers.length === 0) {
+    addTrailer();
+} else {
+    renderTrailers();
 }
 
 renderCurrentSolution();

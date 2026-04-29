@@ -22,6 +22,9 @@ class Trailer:
         return self.model_name.split(' ')[0]
     
     def insert_other_trailer(self, trailer : 'Trailer'):
+        if trailer.length > self.length or trailer.width > self.width or trailer.height > self.height:
+            raise Exception(f'Cannot store a trailer in another that is smaller')
+        
         if 'VT3' not in self.model_category() and 'VT4' not in self.model_category():
             raise Exception(f'This trailer type ({self.model_category()}) cannot contain another trailer')
         
