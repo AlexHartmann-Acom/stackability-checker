@@ -251,7 +251,7 @@ REAR_STACKS = [
                 allowed_models=['O']
             )
         ],
-        blueprint_indices=[0,1,2,3]
+        blueprint_indices=[[0,1,2,3]]
     )
     
     
