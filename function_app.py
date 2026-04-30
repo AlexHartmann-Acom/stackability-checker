@@ -164,6 +164,6 @@ def stack_input(req: func.HttpRequest) -> func.HttpResponse:
         return json_response({"ok": False, "error": str(exc)}, 500)
 
 
-@app.route(route="app", methods=["GET", "POST"])
+@app.route(route="", methods=["GET", "POST"])
 def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
     return WsgiMiddleware(flask_app.wsgi_app).handle(req, context)
