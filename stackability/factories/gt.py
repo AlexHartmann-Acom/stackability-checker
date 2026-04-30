@@ -88,6 +88,17 @@ FRONT_STACKS = [
         ],
         blueprint_indices=[[0], [1]]
     
+    ),
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint(
+                allowed_models=['Ultra Low']
+            ),
+            datatypes.TrailerBlueprint(
+                allowed_models=['O', 'R']
+            )
+        ],
+        blueprint_indices=[[0],[1]]
     )
 ]
 
@@ -205,6 +216,17 @@ MIDDLE_STACKS = [
         ],
         blueprint_indices=[[0], [1]]
     
+    ),
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint(
+                allowed_models=['Ultra Low']
+            ),
+            datatypes.TrailerBlueprint(
+                allowed_models=['O']
+            )
+        ],
+        blueprint_indices=[[0],[1,2]]
     )
 ]
 
@@ -304,6 +326,17 @@ REAR_STACKS = [
             )
         ],
         blueprint_indices=[[0,1,2,3]]
+    ),
+    datatypes.Stack(
+        trailer_blueprints=[
+            datatypes.TrailerBlueprint(
+                allowed_models=['Ultra Low']
+            ),
+            datatypes.TrailerBlueprint(
+                allowed_models=['O', 'R']
+            )
+        ],
+        blueprint_indices=[[0],[1,2]]
     )
     
     
