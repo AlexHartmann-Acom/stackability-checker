@@ -46,6 +46,9 @@ class Stacker:
     def pack_contained_trailers_greedy(trailers: list[dt.Trailer]) -> list[dt.Trailer]:
         remaining = trailers.copy()
 
+        for trailer in remaining:
+            trailer.contained_trailer = None
+
         containers = [
             trailer for trailer in remaining
             if "VT3" in trailer.model_category() or "VT4" in trailer.model_category()
