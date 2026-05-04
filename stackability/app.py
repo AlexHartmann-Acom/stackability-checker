@@ -1250,7 +1250,7 @@ SKU_TRAILER_CATALOG: dict[str, dict[str, Any]] = {'1.39.1.3501.90': {'model_name
   'height': 30}}
 
 
-@app.route("/static/<path:filename>")
+@app.route("/app/static/<path:filename>")
 def static_files(filename):
     return send_from_directory("stackability/static", filename)
 
@@ -2153,7 +2153,7 @@ def serialize_stack_solutions(
     ]
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/app/", methods=["GET", "POST"])
 def index():
     trailers_for_ui: list[dict[str, Any]] = []
     stack_solutions: list[list[list[dict[str, Any]]]] = []
