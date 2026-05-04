@@ -199,7 +199,7 @@ If no full solution exists, the API returns the best partial stacking options.
 
 <h2>Example</h2>
 
-<pre>curl -X POST "https://YOUR-FUNCTION.azurewebsites.net/api/stack" \
+<pre>curl -X POST "https://.../api/stack" \
 -H "Content-Type: application/json" \
 -d '{
   "trailers": [
