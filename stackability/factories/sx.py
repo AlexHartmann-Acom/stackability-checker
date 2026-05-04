@@ -43,18 +43,6 @@ MIDDLE_STACKS = [
         blueprint_indices=[[0,1,2]]
     
     ),
-    ###TESTING
-    datatypes.Stack(
-        trailer_blueprints=[
-            datatypes.TrailerBlueprint(
-                allowed_models=[
-                    'VT1',
-                    'VT4'
-                ]
-            )
-        ],
-        blueprint_indices=[[0]]
-    ),
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
