@@ -56,7 +56,8 @@ MIDDLE_STACKS = [
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
-                allowed_models=['MSX']
+                allowed_models=['MSX'],
+                max_length=404
             ),
             
         ],
@@ -157,7 +158,8 @@ REAR_STACKS = [
     datatypes.Stack(
         trailer_blueprints=[
             datatypes.TrailerBlueprint(
-                allowed_models=['MSX']
+                allowed_models=['MSX'],
+                max_length=404
             ),
             
         ],
