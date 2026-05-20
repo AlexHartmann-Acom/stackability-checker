@@ -7,7 +7,7 @@ from azure.functions import WsgiMiddleware
 from stackability.app import app as flask_app
 from stackability.app import SKU_TRAILER_CATALOG
 import stackability.datatypes as dt
-from stackability.stacker import Stacker
+from stackability.stacker import NonHomogeneousDeliveryException, Stacker
 
 DOCS_HTML = """
 <!doctype html>
@@ -340,6 +340,7 @@ def stack_input(req: func.HttpRequest) -> func.HttpResponse:
                                 serialize_trailer(trailer)
                                 for trailer in result["unplaced_trailers"]
                             ],
+                            "delivery_cost":None
                         }
                         for result in partial_results
                     ],
@@ -358,6 +359,7 @@ def stack_input(req: func.HttpRequest) -> func.HttpResponse:
                             serialize_stack(stack)
                             for stack in solution
                         ],
+                        "delivery_cost":300
                     }
                     for solution in results
                 ],
@@ -369,6 +371,9 @@ def stack_input(req: func.HttpRequest) -> func.HttpResponse:
         return json_response({"ok": False, "error": str(exc)}, 404)
 
     except ValueError as exc:
+        return json_response({"ok": False, "error": str(exc)}, 422)
+    
+    except NonHomogeneousDeliveryException as exc:
         return json_response({"ok": False, "error": str(exc)}, 422)
 
     except Exception as exc:
